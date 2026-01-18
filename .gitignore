@@ -1,3 +1,5 @@
-/Airline-Client/build/*
-/Airline-Client/.idea/*
+/Airline-Client/TUI/build/*
+/Airline-Client/TUI/.idea/*
+/Airline-Client/GUI/build/*
+/Airline-Client/GUI/.idea/*
 /.vscode/*

@@ -1,21 +1,21 @@
 CC=gcc
 
-CLIENT_DIR := Airline-Client
+TUI_CLIENT_DIR := Airline-Client/TUI
 SERVER_DIR := Airline-Server
 
-CLIENT_OUT_DIR := bin/Client
+TUI_CLIENT_OUT_DIR := bin/Client/TUI
 
 .PHONY: all build_client build_server
 
-all: build_client build_server run_client
+all: build_client build_server run_tui_client
 
 build_client:
-	cmake -S $(CLIENT_DIR) -B $(CLIENT_DIR)/build -DCMAKE_BUILD_TYPE=Release
-	cmake --build ${CLIENT_DIR}/build
-	mv ${CLIENT_DIR}/build/Airline_Client ${CLIENT_OUT_DIR}
+	cmake -S $(TUI_CLIENT_DIR) -B $(TUI_CLIENT_DIR)/build -DCMAKE_BUILD_TYPE=Release
+	cmake --build ${TUI_CLIENT_DIR}/build
+	mv ${TUI_CLIENT_DIR}/build/Airline_Client ${TUI_CLIENT_OUT_DIR}
 
-run_client: 
+run_tui_client: 
 
-	${CLIENT_OUT_DIR}/Airline_Client
+	${TUI_CLIENT_OUT_DIR}/Airline_Client
 
 build_server:
