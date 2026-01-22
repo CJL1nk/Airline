@@ -1,32 +1,51 @@
 #include <ncurses.h>
 
 int main() {
+    WINDOW *left_win, *right_win;
+    int height, width, split_width;
+
+    initscr();            /* Start curses mode */
+    noecho();             /* Don't echo input keys to the screen */
+    curs_set(0);          /* Hide the cursor */
     
-    int ch;
+    // Get the dimensions of the entire screen
+    getmaxyx(stdscr, height, width);
 
-	initscr();			/* Start curses mode 		*/
-	raw();				/* Line buffering disabled	*/
-	keypad(stdscr, TRUE);		/* We get F1, F2 etc..		*/
-	noecho();			/* Don't echo() while we do getch */
+    // Calculate the split point (e.g., half the width)
+    split_width = width / 2;
 
-    printw("Type any character to see it in bold\n");
-	ch = getch();			/* If raw() hadn't been called
-					 * we have to press enter before it
-					 * gets to the program 		*/
-	if(ch == KEY_F(1))		/* Without keypad enabled this will */
-		printw("F1 Key pressed");/*  not get to us either	*/
-					/* Without noecho() some ugly escape
-					 * charachters might have been printed
-					 * on screen			*/
-	else
-	{	printw("The pressed key is ");
-		attron(A_BOLD);
-		printw("%c", ch);
-		attroff(A_BOLD);
-	}
-	refresh();			/* Print it on to the real screen */
-    	getch();			/* Wait for user input */
-	endwin();			/* End curses mode		  */
+    // Create the left window
+    // newwin(height, width, start_y, start_x)
+    left_win = newwin(height, split_width, 0, 0); 
+    
+    // Create the right window
+    // start_x for the right window is the end of the left window
+    right_win = newwin(height, width - split_width, 0, split_width);
 
-	return 0;
+    // Add borders to visually separate the windows
+    box(left_win, 0, 0);
+    box(right_win, 0, 0);
+
+    // Print content to each specific window using mvwprintw
+    mvwprintw(left_win, 1, 1, "Left Window");
+    mvwprintw(right_win, 1, 1, "Right Window");
+
+	box(left_win, 0, 0);
+	box(right_win, 0, 0);
+	mvwprintw(left_win, 1, 1, "Todger");	
+	mvwprintw(right_win, 1, 1, "Skibidi");
+
+    // Refresh the windows to display content on the physical screen
+    wrefresh(left_win);
+    wrefresh(right_win);
+
+    getch();              /* Wait for user input */
+    
+    // Clean up windows
+    delwin(left_win);
+    delwin(right_win);
+
+    endwin();             /* End curses mode */
+
+    return 0;
 }
